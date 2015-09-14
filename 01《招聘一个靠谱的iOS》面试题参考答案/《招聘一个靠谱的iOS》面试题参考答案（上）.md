@@ -872,7 +872,7 @@ objc_setAssociatedObject(objectToBeDeallocted,
 
     在默认情况下，由编译器合成的方法会通过锁定机制确保其原子性(atomicity)。如果属性具备nonatomic特质，则不使用同步锁。请注意，尽管没有名为“atomic”的特质(如果某属性不具备nonatomic特质，那它就是“原子的” ( atomic) )，但是仍然可以在属性特质中写明这一点，编译器不会报错。若是自己定义存取方法，那么就应该遵从与属性特质相符的原子性。
 
- 2. 读/写权限---`readwrite(读写)`、`readooly (只读)`
+ 2. 读/写权限---`readwrite(读写)`、`readonly (只读)`
  3. 内存管理语义---`assign`、`strong`、 `weak`、`unsafe_unretained`、`copy`
  4. 方法名---`getter=<name>` 、`setter=<name>`
    
@@ -1267,6 +1267,7 @@ objc在向一个对象发送消息时，runtime库会根据对象的isa指针找
 
  这一步是Runtime最后一次给你挽救的机会。首先它会发送`-methodSignatureForSelector:`消息获得函数的参数和返回值类型。如果`-methodSignatureForSelector:`返回nil，Runtime则会发出`-doesNotRecognizeSelector:`消息，程序这时也就挂掉了。如果返回了一个函数签名，Runtime就会创建一个NSInvocation对象并发送`-forwardInvocation:`消息给目标对象。
 
+为了能更清晰地理解这些方法的作用，git仓库里也给出了一个Demo，名称叫“ `_objc_msgForward_demo` ”,可运行起来看看。
 
 ###19. 一个objc对象如何进行内存布局？（考虑有父类的情况）
 
